@@ -25,7 +25,7 @@ SECRET_KEY = '(gtna@vcww^%vpce1=+tll&@o#%yebt$&gtz)j*_tgwirw7##7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://last-bypark.c9users.io']
+ALLOWED_HOSTS = ['last-bypark.c9users.io']
 
 
 # Application definition
