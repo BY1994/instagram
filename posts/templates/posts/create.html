@@ -1,4 +1,10 @@
 {% extends 'base.html' %}
 
 {% block body %}
+<h1>새로운 Post 작성하기</h1>
+<form method="POST">
+  {% csrf_token %}
+  {{ form }}
+</form>
+
 {% endblock%}
