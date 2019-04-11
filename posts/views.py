@@ -35,15 +35,16 @@ def delete(request, post_id):
 
 def update(request, post_id):
     post = Post.objects.get(pk=post_id)
-    form = PostModelForm(request.POST, instance=post)
+
     if request.method == "POST":
         # 수정내용 DB에 반영
-        
+        form = PostModelForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
-        return redirect('posts:list')
+            return redirect('posts:list')
     else:
         # 수정 내용 편집
+        form = PostModelForm(instance=post)
         context = {
             'form': form,
         }
