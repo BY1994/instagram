@@ -7,7 +7,7 @@ def create(request):
     # 만약 GET 요청이 오면
     if request.method == "POST":
         # 글을 작성하기
-        form = PostModelForm(request.POST)
+        form = PostModelForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('posts:list')
