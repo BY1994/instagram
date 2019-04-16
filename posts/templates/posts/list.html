@@ -40,6 +40,13 @@
             {% bootstrap_form comment_form %}
             <button type="submit" class="btn btn-warning">댓글</button>
           </form>
+          
+          {% for comment in post.comment_set.all %}
+          <div class="card-text">
+            <strong>{{ comment.user }}</strong> {{ comment.content }}
+          </div>
+          {% endfor %}
+          
         </div>
       </div>
       {% endfor %}
