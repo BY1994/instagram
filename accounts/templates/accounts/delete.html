@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block body %}
+  <h1>정말로 탈퇴하실 건가요 ㅠㅠ</h1>
+  <form action="{% url 'accounts:delete' %}" method="POST">
+    {% csrf_token %}
+    <button class="btn btn-dark" type="submit">가지마세요</button>
+  </form>
+{% endblock %}
