@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
 {% block body %}
-  <h1>{{ profile.username }}</h1>
+  <h1>{{ profile.username }} 
+    {% if user != profile %}
+      {% if user in profile.followers.all %}
+        <a class="btn btn-primary" href="{% url 'accounts:follow' profile.id %}">언팔로우</a></h1>
+      {% else %}
+        <a class="btn btn-info" href="{% url 'accounts:follow' profile.id %}">팔로우</a></h1>
+      {% endif %}
+      
+    {% endif %}
   {% if user == profile %}
   <a class="btn btn-danger" href="{% url 'accounts:delete' %}">회원탈퇴</a>
   {% endif %}
