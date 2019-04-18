@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block body %}
-  <h1>{{ profile.username }} 
+<div class="row">
+  <div class="col-3">
+    <h1>{{ profile.username }} 
     {% if user != profile %}
       {% if user in profile.followers.all %}
         <a class="btn btn-primary" href="{% url 'accounts:follow' profile.id %}">언팔로우</a></h1>
@@ -9,9 +11,20 @@
       {% endif %}
       
     {% endif %}
+  
   {% if user == profile %}
   <a class="btn btn-danger" href="{% url 'accounts:delete' %}">회원탈퇴</a>
+  <a class="btn btn-danger" href="{% url 'accounts:change_profile' %}">프로필변경</a>
   {% endif %}
+  </div>
+  <div class="col-9">
+      <div>
+    <strong>{{ profile.profile.nickname }}</strong>
+    {{ profile.profile.description }}
+    </div>
+  </div>
+</div>
+  
   <div class="row">
     <!-- 해당 유저가 작성한 모든 post를 보여줌 -->
     {% for post in profile.post_set.all %}

@@ -5,6 +5,8 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model
 from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
+from .models import Profile
+from .forms import ProfileForm
 
 # Create your views here.
 def signup(request):
@@ -13,6 +15,8 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            # 가입된 유저의 Profile 레코드도 함께 생성
+            Profile.objects.create(user=user)
             auth_login(request, user)
             return redirect('posts:list')
     else:
@@ -62,3 +66,15 @@ def follow(request, user_id):
         person.followers.add(request.user)
     #  -> 팔로우
     return redirect('profile', person.username)
+    
+@login_required
+def change_profile(request):
+    # 프로필 정보 수정
+    if request.method == "POST":
+        profile_form = ProfileForm(data=request.POST, instance=request.user.profile)
+        if profile_form.is_valid():
+            profile_form.save()
+        return redirect('profile', request.user.username)
+    else:
+        profile_form = ProfileForm(instance=request.user.profile)
+        return render(request, 'accounts/change_profile.html', {'profile_form':profile_form})
