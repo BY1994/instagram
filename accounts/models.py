@@ -9,6 +9,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     description = models.TextField(blank=True)
     nickname = models.CharField(max_length=40, blank=True)
+    image = models.ImageField(blank=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
     def __str__(self):

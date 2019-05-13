@@ -2,20 +2,23 @@
 {% block body %}
 <div class="row">
   <div class="col-3">
+    {% if profile.profile.image %}
+    <img class="rounded-circle img-fluid" src="{{ profile.profile.image.url }}">
+    {% else %}
+    <img class="rounded-circle img-fluid" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
+    {% endif %}
     <h1>{{ profile.username }} 
     {% if user != profile %}
       {% if user in profile.followers.all %}
-        <a class="btn btn-primary" href="{% url 'accounts:follow' profile.id %}">언팔로우</a></h1>
+        <a class="btn btn-primary" href="{% url 'accounts:follow' profile.id %}">언팔로우</a>
       {% else %}
-        <a class="btn btn-info" href="{% url 'accounts:follow' profile.id %}">팔로우</a></h1>
+        <a class="btn btn-info" href="{% url 'accounts:follow' profile.id %}">팔로우</a>
       {% endif %}
       
     {% endif %}
+    </h1>
+    
   
-  {% if user == profile %}
-  <a class="btn btn-danger" href="{% url 'accounts:delete' %}">회원탈퇴</a>
-  <a class="btn btn-danger" href="{% url 'accounts:change_profile' %}">프로필변경</a>
-  {% endif %}
   </div>
   <div class="col-9">
       <div>
@@ -24,6 +27,11 @@
     </div>
   </div>
 </div>
+
+  {% if user == profile %}
+  <a class="btn btn-danger" href="{% url 'accounts:delete' %}">회원탈퇴</a>
+  <a class="btn btn-danger" href="{% url 'accounts:change_profile' %}">프로필변경</a>
+  {% endif %}
   
   <div class="row">
     <!-- 해당 유저가 작성한 모든 post를 보여줌 -->

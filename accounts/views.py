@@ -71,7 +71,7 @@ def follow(request, user_id):
 def change_profile(request):
     # 프로필 정보 수정
     if request.method == "POST":
-        profile_form = ProfileForm(data=request.POST, instance=request.user.profile)
+        profile_form = ProfileForm(data=request.POST,instance=request.user.profile, files=request.FILES) # 
         if profile_form.is_valid():
             profile_form.save()
         return redirect('profile', request.user.username)
