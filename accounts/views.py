@@ -7,12 +7,15 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
 from .forms import ProfileForm
+from django.http import JsonResponse
 
 # Create your views here.
 def signup(request):
     # 회원가입
     if request.method == "POST":
+        print(request.POST)
         form = CustomUserCreationForm(request.POST)
+        print(form)
         if form.is_valid():
             user = form.save()
             # 가입된 유저의 Profile 레코드도 함께 생성
@@ -71,10 +74,38 @@ def follow(request, user_id):
 def change_profile(request):
     # 프로필 정보 수정
     if request.method == "POST":
+        print(request.POST)
         profile_form = ProfileForm(data=request.POST,instance=request.user.profile, files=request.FILES) # 
+        print(profile_form)
         if profile_form.is_valid():
             profile_form.save()
         return redirect('profile', request.user.username)
     else:
         profile_form = ProfileForm(instance=request.user.profile)
         return render(request, 'accounts/change_profile.html', {'profile_form':profile_form})
+        
+@login_required
+def vue_follow(request, user_id):
+    # follow를 시키거나, unfollow를 시키거나 둘 중에 하나를 한다. 
+    # => JSON으로 받아서 => Vue를 통해 render
+    person = get_object_or_404(get_user_model(), pk=user_id)
+    # 만약 이미 팔로우한 사람이라면
+    if request.user in person.followers.all():
+        person.followers.remove(request.user) # user=request.user
+        followed = False
+    #  -> 언팔
+    # 아니면,
+    else:
+        person.followers.add(request.user)
+        followed = True
+    #  -> 팔로우
+    return JsonResponse({'followed': followed})
+    
+@login_required
+def check_follow(request, user_id):
+    person = get_object_or_404(get_user_model(), pk=user_id)
+    if request.user in person.followers.all():
+        followed = True
+    else:
+        followed = False
+    return JsonResponse({'followed': followed})
